@@ -16,13 +16,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-require('./app/routes/post.routes')(app)
+require('./app/routes/bread.routes')(app)
 
 const db = require('./app/models/')
 db.mongoose
   .connect(db.url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true,
+    // useFindAndModify: true
   })
   .then(() => {
     console.log('Database connected!')

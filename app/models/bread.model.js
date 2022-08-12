@@ -1,9 +1,11 @@
 module.exports = (mongoose) => {
     const schema = mongoose.Schema(
         {
-            title: String,
-            body: String,
-            published: Boolean
+            stringdata: String,
+            integerdata: Number,
+            floatdata: Number,
+            datedata: String,
+            boolean: Boolean
         },
         //mencatat kapan data akan dibuat
         { timestamps: true }
@@ -15,6 +17,6 @@ module.exports = (mongoose) => {
         return object
     })
 
-    const Post = mongoose.model("posts", schema)
+    const Post = mongoose.model("breads", schema)
     return Post
 }
