@@ -11,6 +11,6 @@ module.exports = (app) => {
     router.put('/edit/:id', breads.update)
     router.delete('/:id', breads.delete)
 
-    app.use('/', router)
+    app.use('/api', router)
     return router;
 }

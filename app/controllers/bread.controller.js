@@ -3,8 +3,8 @@ const Bread = db.breads //memanggil collection breads
 
 exports.findAll = (req, res) => {
     Bread.find()
-        .then((result) => {
-            res.send(result)
+        .then((data) => {
+            res.status(200).json({data})
         }).catch((err) => {
             res.status(500).send({
                 message: err.message || "error ketika mengambil data"
@@ -24,8 +24,8 @@ exports.create = (req, res) => {
 
     //melakukan query untuk membuat dokumen ke dalam bread
     bread.save(bread)
-        .then((result) => {
-            res.send(result)
+        .then((data) => {
+            res.send(data)
         })
         .catch((err) => {
             res.status(409).send({
@@ -38,8 +38,8 @@ exports.findOne = (req, res) => {
     const id = req.params.id
 
     Bread.findById(id)
-        .then(result => {
-            res.send(result)
+        .then(data => {
+            res.send(data)
         })
         .catch(err => {
             res.status(409).send({
@@ -52,8 +52,8 @@ exports.update = (req, res) => {
     const id = req.params.id
 
     Bread.findByIdAndUpdate(id, req.body)
-        .then(result => {
-            if (!result) {
+        .then(data => {
+            if (!data) {
                 res.status(404).send({
                     message: "bread not found"
                 })
@@ -74,8 +74,8 @@ exports.delete = (req, res) => {
     const id = req.params.id
 
     Bread.findByIdAndRemove(id)
-        .then(result => {
-            if (!result) {
+        .then(data => {
+            if (!data) {
                 res.status(404).send({
                     message: "bread not found"
                 })
