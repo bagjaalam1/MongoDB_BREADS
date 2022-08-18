@@ -219,7 +219,7 @@
                     <td>${item.boolean}</td>
                     <td>
                         <a class="btn btn-success btn-sm" href=""><i class="fa-solid fa-pencil"></i></a>
-                        <a class="btn btn-danger btn-sm" href=""><i class="fa-solid fa-trash"></i></a>    
+                        <a class="btn btn-danger btn-sm" onClick="deleteData('${item._id}')" href=""><i class="fa-solid fa-trash"></i></a>    
                     </td>
                         </tr>
                     `
@@ -229,8 +229,8 @@
         } 
 
 
-        const createData = () => {
-            fetch("http://localhost:3000/api", {
+        const createData = (_id, stringdata, integerdata, floatdata, datedata, boolean) => {
+            fetch("http://localhost:3000/api/add", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -247,14 +247,41 @@
                 })
                 .then((response) => {
                     readData()
+                    document.getElementById('form-user').reset()
+                })
+        }
+
+        const deleteData = (id) => {
+            fetch(`http://localhost:3000/api/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+
+                    return response.json();
+                })
+                .then((response) => {
+                    readData()
                 })
         }
 
         readData()
 
-        const formBread = document.getElementById('form-user')
-        formBread.addEventListener('submit', function(event){
-            event.preventDefault();
+        document.getElementById('form-user').addEventListener('submit', function (event) {
+            event.preventDefault()
+            const stringdata = document.getElementById('string').value
+            const integerdata = document.getElementById('integer').value
+            const floatdata = document.getElementById('float').value
+            const datedata = document.getElementById('date').value
+            const boolean = document.getElementById('boolean').value
+            console.log(stringdata, integerdata, floatdata, datedata, boolean)
+            createData(stringdata, integerdata, floatdata, datedata, boolean)
         })
     </script>
 </body>
