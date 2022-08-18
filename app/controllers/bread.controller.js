@@ -19,7 +19,7 @@ exports.create = (req, res) => {
         integerdata: req.body.integerdata,
         floatdata: req.body.floatdata,
         datedata: req.body.datedata,
-        boolean: req.body.booleandata ? req.body.booleandata : false
+        boolean: req.body.boolean ? req.body.boolean : false
     })
 
     //melakukan query untuk membuat dokumen ke dalam bread

@@ -143,14 +143,14 @@
         <h2>Add Data</h2>
     </div>
 
-    <div class="card-body">
-        <form id="form-user" action="" method="post">
+    <form id="form" action="" method="post">
+        <div class="card-body">
             <div class="mb-3 row">
                 <div class="col-sm-2 d-flex align-items-center">
                     <label class="col-form-label" for="string">String</label>
                 </div>
                 <div class="col-sm-10">
-                    <input class="form-control" type="text" id="string" name="stringdata" placeholder="String">
+                    <input class="form-control" type="text" id="string-add" name="stringdata" placeholder="String" value="">
                 </div>
             </div>
             <div class="mb-3 row">
@@ -158,7 +158,7 @@
                     <label class="col-form-label" for="integer">Integer</label>
                 </div>
                 <div class="col-sm-10">
-                    <input class="form-control" type="number" id="integer" name="integerdata" placeholder="Integer">
+                    <input class="form-control" type="number" id="integer-add" name="integerdata" placeholder="Integer" value="">
                 </div>
             </div>
             <div class="mb-3 row">
@@ -166,7 +166,8 @@
                     <label class="col-form-label" for="float">Float</label>
                 </div>
                 <div class="col-sm-10">
-                    <input class="form-control" type="number" id="float" step="any" name="floatdata" placeholder="Float">
+                    <input class="form-control" type="number" id="float-add" step="any" name="floatdata"
+                        placeholder="Float" value="">
                 </div>
             </div>
             <div class="mb-3 row">
@@ -174,7 +175,7 @@
                     <label class="col-form-label" for="date">Date</label>
                 </div>
                 <div class="col-sm-10">
-                    <input class="form-control" type="date" id="date" name="datedata" placeholder="end date">
+                    <input class="form-control" type="date" id="date-add" name="datedata" placeholder="end date" value="">
                 </div>
             </div>
             <div class="mb-3 row">
@@ -182,7 +183,7 @@
                     <label class="col-form-label" for="boolean">Boolean</label>
                 </div>
                 <div class="col-sm-10">
-                    <select class="form-control" name="boolean" id="boolean">
+                    <select class="form-control" name="boolean" id="boolean-add">
                         <option value="" disabled selected hidden>Choose the boolean ...</option>
                         <option value="true">True</option>
                         <option value="false">False</option>
@@ -193,8 +194,8 @@
             <div>
                 <input class="btn btn-success" type="submit" value="Save">
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     <script>
         const readData = () => {
@@ -226,17 +227,17 @@
                     });
                     document.querySelector('table tbody').innerHTML = html
                 });
-        } 
+        }
 
 
-        const createData = (_id, stringdata, integerdata, floatdata, datedata, boolean) => {
+        const createData = (stringdata, integerdata, floatdata, datedata, boolean) => {
             fetch("http://localhost:3000/api/add", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ _id, stringdata, integerdata, floatdata, datedata, boolean })
+                body: JSON.stringify({ stringdata, integerdata, floatdata, datedata, boolean })
             })
                 .then((response) => {
                     if (!response.ok) {
@@ -247,7 +248,7 @@
                 })
                 .then((response) => {
                     readData()
-                    document.getElementById('form-user').reset()
+                    document.getElementById('form').reset()
                 })
         }
 
@@ -273,14 +274,13 @@
 
         readData()
 
-        document.getElementById('form-user').addEventListener('submit', function (event) {
+        document.getElementById('form').addEventListener('submit', function (event) {
             event.preventDefault()
-            const stringdata = document.getElementById('string').value
-            const integerdata = document.getElementById('integer').value
-            const floatdata = document.getElementById('float').value
-            const datedata = document.getElementById('date').value
-            const boolean = document.getElementById('boolean').value
-            console.log(stringdata, integerdata, floatdata, datedata, boolean)
+            const stringdata = document.getElementById('string-add').value
+            const integerdata = document.getElementById('integer-add').value
+            const floatdata = document.getElementById('float-add').value
+            const datedata = document.getElementById('date-add').value
+            const boolean = document.getElementById('boolean-add').value
             createData(stringdata, integerdata, floatdata, datedata, boolean)
         })
     </script>
