@@ -2,6 +2,30 @@ const db = require('../models')
 const Bread = db.breads //memanggil collection breads
 
 exports.findAll = (req, res) => {
+
+    // const limit = req.query.display
+    // const page = req.query.page || 1
+    
+    // const offset = limit == 'all' ? 0 : (page - 1) * limit
+    const searchParams = {}
+    
+  //pencarian
+  if (req.query.stringdata && req.query.stringcheck) {
+    searchParams['stringdata'] = new RegExp(`${req.query.stringdata}, 'i`)
+  }
+
+  if (req.query.integerdata && req.query.integercheck) {
+    searchParams['integerdata'] = new RegExp(`${req.query.integerdata}, 'i`)
+  }
+
+  if (req.query.floatdata && req.query.floatcheck) {
+    searchParams['floatdata'] = new RegExp(`${req.query.floatdata}, 'i`)
+  }
+
+  if (req.query.boolean && req.query.booleancheck) {
+    searchParams['boolean'] = new RegExp(`${req.query.boolean}, 'i`)
+  }
+
     Bread.find()
         .then((data) => {
             res.status(200).json({data})

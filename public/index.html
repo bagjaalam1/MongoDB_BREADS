@@ -19,7 +19,7 @@
             <h2>Filter</h2>
         </div>
         <div class="card-body">
-            <form action="" method="get">
+            <form action="" method="get" id="form-search">
                 <div class="mb-3 row">
                     <div class="col-sm-2 d-flex align-items-center">
                         <input class="form-check-input mt-0" type="checkbox" id="idcheck" name="idcheck">
@@ -145,7 +145,7 @@
         <div class="card-body">
             <div class="mb-3 row">
                 <div class="col-sm-2 d-flex align-items-center">
-                    <label class="col-form-label" for="string">String</label>
+                    <label class="col-form-label" for="string-add">String</label>
                 </div>
                 <div class="col-sm-10">
                     <input class="form-control" type="text" id="string-add" name="stringdata" placeholder="String"
@@ -154,7 +154,7 @@
             </div>
             <div class="mb-3 row">
                 <div class="col-sm-2 d-flex align-items-center">
-                    <label class="col-form-label" for="integer">Integer</label>
+                    <label class="col-form-label" for="integer-add">Integer</label>
                 </div>
                 <div class="col-sm-10">
                     <input class="form-control" type="number" id="integer-add" name="integerdata" placeholder="Integer"
@@ -163,7 +163,7 @@
             </div>
             <div class="mb-3 row">
                 <div class="col-sm-2 d-flex align-items-center">
-                    <label class="col-form-label" for="float">Float</label>
+                    <label class="col-form-label" for="float-add">Float</label>
                 </div>
                 <div class="col-sm-10">
                     <input class="form-control" type="number" id="float-add" step="any" name="floatdata"
@@ -172,7 +172,7 @@
             </div>
             <div class="mb-3 row">
                 <div class="col-sm-2 d-flex align-items-center">
-                    <label class="col-form-label" for="date">Date</label>
+                    <label class="col-form-label" for="date-add">Date</label>
                 </div>
                 <div class="col-sm-10">
                     <input class="form-control" type="date" id="date-add" name="datedata" placeholder="end date"
@@ -181,7 +181,7 @@
             </div>
             <div class="mb-3 row">
                 <div class="col-sm-2 d-flex align-items-center">
-                    <label class="col-form-label" for="boolean">Boolean</label>
+                    <label class="col-form-label" for="boolean-add">Boolean</label>
                 </div>
                 <div class="col-sm-10">
                     <select class="form-control" name="boolean" id="boolean-add">
@@ -199,8 +199,8 @@
     </form>
 
     <script>
-        const readData = () => {
-            fetch("http://localhost:3000/api")
+        const readData = (params) => {
+            fetch(`http://localhost:3000/api?${new URLSearchParams(params).toString()}`)
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -334,6 +334,16 @@
             const datedata = document.getElementById('date-add').value
             const boolean = document.getElementById('boolean-add').value
             saveData(id, stringdata, integerdata, floatdata, datedata, boolean)
+        })
+
+        document.getElementById('form-search').addEventListener('submit', function (event) {
+            event.preventDefault()
+            const stringdata = document.getElementById('string').value
+            const integerdata = document.getElementById('integer').value
+            const floatdata = document.getElementById('float').value
+            const datedata = document.getElementById('date').value
+            const boolean = document.getElementById('boolean').value
+            readData({stringdata, integerdata, floatdata, datedata, boolean})
         })
     </script>
 </body>
