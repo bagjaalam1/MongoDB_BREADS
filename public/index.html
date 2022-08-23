@@ -20,7 +20,7 @@
         </div>
         <div class="card-body">
             <form action="" method="get" id="form-search">
-                <div class="mb-3 row">
+                <!-- <div class="mb-3 row">
                     <div class="col-sm-2 d-flex align-items-center">
                         <input class="form-check-input mt-0" type="checkbox" id="idcheck" name="idcheck">
                         <label class="col-form-label" for="idcheck">ID</label>
@@ -28,7 +28,7 @@
                     <div class="col-sm-10">
                         <input class="form-control" type="number" id="id" name="id" placeholder="ID" value="">
                     </div>
-                </div>
+                </div> -->
                 <div class="mb-3 row">
                     <div class="col-sm-2 d-flex align-items-center">
                         <input class="form-check-input mt-0" type="checkbox" id="stringcheck" name="stringcheck">
@@ -68,11 +68,11 @@
                     </div>
 
                     <div class="col-sm-10">
-                        <input class="form-control" type="date" id="date" name="startDate" placeholder="start date"
+                        <input class="form-control" type="date" id="startDate" name="startDate" placeholder="start date"
                             value="">
                         <br>
                         to <br>
-                        <input class="form-control" type="date" id="date" name="endDate" placeholder="end date"
+                        <input class="form-control" type="date" id="endDate" name="endDate" placeholder="end date"
                             value="">
                     </div>
                 </div>
@@ -103,7 +103,7 @@
         <thead>
             <tr>
                 <th>
-                    ID
+                    No
                 </th>
                 <th>
                     String
@@ -129,10 +129,23 @@
 
 
         </tbody>
-
-
     </table>
 
+    <br>
+
+    <nav class="pagination-container">
+        <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
+            &lt;
+        </button>
+
+        <div id="pagination-numbers">
+
+        </div>
+
+        <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
+            &gt;
+        </button>
+    </nav>
 
     <br>
 
@@ -200,7 +213,13 @@
 
     <script>
         const readData = (params) => {
-            fetch(`http://localhost:3000/api?${new URLSearchParams(params).toString()}`)
+            fetch(`http://localhost:3000/api?${new URLSearchParams(params).toString()}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -209,6 +228,7 @@
                     return response.json();
                 })
                 .then((response) => {
+                    console.log(response)
                     let html = ''
                     response.data.forEach((item, index) => {
                         html += `
@@ -229,7 +249,6 @@
                     document.querySelector('table tbody').innerHTML = html
                 });
         }
-
 
         const saveData = (id, stringdata, integerdata, floatdata, datedata, boolean) => {
             if (id) {
@@ -341,9 +360,16 @@
             const stringdata = document.getElementById('string').value
             const integerdata = document.getElementById('integer').value
             const floatdata = document.getElementById('float').value
-            const datedata = document.getElementById('date').value
+            const startDate = document.getElementById('startDate').value
+            const endDate = document.getElementById('endDate').value
             const boolean = document.getElementById('boolean').value
-            readData({stringdata, integerdata, floatdata, datedata, boolean})
+            const stringcheck = document.getElementById("stringcheck").checked
+            const integercheck = document.getElementById("integercheck").checked
+            const floatcheck = document.getElementById("floatcheck").checked
+            const datecheck = document.getElementById("datecheck").checked
+            const booleancheck = document.getElementById("booleancheck").checked
+
+            readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
         })
     </script>
 </body>
