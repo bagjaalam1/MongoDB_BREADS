@@ -125,7 +125,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="list">
 
 
         </tbody>
@@ -133,18 +133,22 @@
 
     <br>
 
-    <nav class="pagination-container">
-        <button class="pagination-button" id="prev-button" title="Previous page" aria-label="Previous page">
-            &lt;
-        </button>
+    <nav aria-label="...">
+        <ul class="pagination" id="pagination">
+            <li class="pagination-item" id="prev" title="Previous page" aria-label="Previous page">
+                <a class="page-link" href="#" datapage>prev</a>
+            </li>
 
-        <div id="pagination-numbers">
+            <li id="pagination-numbers">
 
-        </div>
+            </li>
 
-        <button class="pagination-button" id="next-button" title="Next page" aria-label="Next page">
-            &gt;
-        </button>
+
+            <li class="pagination-item" id="next" title="Next page" aria-label="Next page">
+                <a class="page-link" href="">next</a>
+            </li>
+        </ul>
+
     </nav>
 
     <br>
@@ -218,21 +222,21 @@
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                }
+                },
             })
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
-
                     return response.json();
+                    
                 })
                 .then((response) => {
                     console.log(response)
                     let html = ''
                     response.data.forEach((item, index) => {
                         html += `
-                        <tr>
+                        <tr id="list-data${index}">
                     <td>${index + 1}</td>
                     <td>${item.stringdata}</td>
                     <td>${item.integerdata}</td>
@@ -245,6 +249,7 @@
                     </td>
                         </tr>
                     `
+                    
                     });
                     document.querySelector('table tbody').innerHTML = html
                 });
@@ -370,6 +375,10 @@
             const booleancheck = document.getElementById("booleancheck").checked
 
             readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
+        })
+
+        document.getElementById('pagination').addEventListener('submit', function () {
+            
         })
     </script>
 </body>

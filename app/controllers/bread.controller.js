@@ -69,18 +69,6 @@ exports.findAll = async (req, res) => {
     } catch (err) {
         console.log(err.stack);
     }
-
-
-
-    // Bread.find()
-    //     .then((data) => {
-    //         const pages = limit == 'all'
-    //         res.status(200).json({ data })
-    //     }).catch((err) => {
-    //         res.status(500).send({
-    //             message: err.message || "error ketika mengambil data"
-    //         })
-    //     })
 }
 
 exports.create = (req, res) => {
