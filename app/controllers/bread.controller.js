@@ -5,8 +5,6 @@ exports.findAll = async (req, res) => {
 
     try {
 
-        console.log(req.query.startDate)
-        console.log(req.query.endDate)
         let query = {}
         const stringCheck = req.query.stringcheck == 'false' ? false : true
         const integerCheck = req.query.integercheck == 'false' ? false : true
@@ -46,14 +44,13 @@ exports.findAll = async (req, res) => {
             };
         }
 
-        const page = req.query.page || 1;
+        let page = req.query.page || 1;
         const limit = 3;
-        const offset = (page - 1) * limit;
-        console.log(query)
+        const offset = page > 0 ? (page - 1) * limit : 0;
 
         const totalResult = await Bread.count(query)
         const pages = Math.ceil(totalResult / limit)
-
+        console.log(offset)
         const data = await Bread
             .find(query)
             .skip(offset)

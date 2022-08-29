@@ -134,21 +134,9 @@
     <br>
 
     <nav aria-label="...">
-        <ul class="pagination" id="pagination">
-            <li class="pagination-item" id="prev" title="Previous page" aria-label="Previous page">
-                <a class="page-link" href="#" datapage>prev</a>
-            </li>
+        <ul class="pagination" id="pagination-numbers">
 
-            <li id="pagination-numbers">
-
-            </li>
-
-
-            <li class="pagination-item" id="next" title="Next page" aria-label="Next page">
-                <a class="page-link" href="">next</a>
-            </li>
         </ul>
-
     </nav>
 
     <br>
@@ -229,7 +217,7 @@
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     return response.json();
-                    
+
                 })
                 .then((response) => {
                     console.log(response)
@@ -249,9 +237,121 @@
                     </td>
                         </tr>
                     `
-                    
+
                     });
                     document.querySelector('table tbody').innerHTML = html
+                    document.getElementById('form-search').addEventListener('submit', function () {
+                        event.preventDefault()
+                        const stringdata = document.getElementById('string').value
+                        const integerdata = document.getElementById('integer').value
+                        const floatdata = document.getElementById('float').value
+                        const startDate = document.getElementById('startDate').value
+                        const endDate = document.getElementById('endDate').value
+                        const boolean = document.getElementById('boolean').value
+                        const stringcheck = document.getElementById("stringcheck").checked
+                        const integercheck = document.getElementById("integercheck").checked
+                        const floatcheck = document.getElementById("floatcheck").checked
+                        const datecheck = document.getElementById("datecheck").checked
+                        const booleancheck = document.getElementById("booleancheck").checked
+
+                        readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
+                    })
+                    
+                    const paginationNumbers = document.getElementById('pagination-numbers')
+                    let pagination = `
+                    <li class="page-item " id="prev">
+                        <button class="page-link">
+                        Previous
+                        </button>
+                    </li>
+                    `
+                    for (let i = 1; i <= response.pages; i++) {
+                        pagination += `
+                        <li class="page-item">
+                            <button id="page${i}" class="page-link">
+                            ${i}
+                            </button>
+                        </li>
+                        
+                        `
+                    }
+                    pagination += `
+                    <li class="page-item" id="next">
+                        <button class="page-link">
+                        Next
+                        </button>
+                    </li>
+                    `
+                    paginationNumbers.innerHTML = pagination
+
+                    const prev = document.getElementById('prev')
+                    const next = document.getElementById('next')
+
+                    if (response.page == 1) {
+                        prev.classList.remove('page-item')
+                        prev.classList.add('page-item', 'disabled')
+                    }
+
+                    if (response.page == response.pages) {
+                        next.classList.remove('page-item')
+                        next.classList.add('page-item', 'disabled')
+                    }
+
+                    for (let i = 1; i <= response.pages; i++) {
+                        document.getElementById(`page${i}`).addEventListener('click', function () {
+                        event.preventDefault
+                        const stringdata = document.getElementById('string').value
+                        const integerdata = document.getElementById('integer').value
+                        const floatdata = document.getElementById('float').value
+                        const startDate = document.getElementById('startDate').value
+                        const endDate = document.getElementById('endDate').value
+                        const boolean = document.getElementById('boolean').value
+                        const stringcheck = document.getElementById("stringcheck").checked
+                        const integercheck = document.getElementById("integercheck").checked
+                        const floatcheck = document.getElementById("floatcheck").checked
+                        const datecheck = document.getElementById("datecheck").checked
+                        const booleancheck = document.getElementById("booleancheck").checked
+                        let page = i
+
+                        readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
+                    })
+                    }
+                    document.getElementById('next').addEventListener('click', function () {
+                        event.preventDefault
+                        const stringdata = document.getElementById('string').value
+                        const integerdata = document.getElementById('integer').value
+                        const floatdata = document.getElementById('float').value
+                        const startDate = document.getElementById('startDate').value
+                        const endDate = document.getElementById('endDate').value
+                        const boolean = document.getElementById('boolean').value
+                        const stringcheck = document.getElementById("stringcheck").checked
+                        const integercheck = document.getElementById("integercheck").checked
+                        const floatcheck = document.getElementById("floatcheck").checked
+                        const datecheck = document.getElementById("datecheck").checked
+                        const booleancheck = document.getElementById("booleancheck").checked
+                        let page = response.page
+                        page++
+
+                        readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
+                    })
+                    document.getElementById('prev').addEventListener('click', function () {
+                        event.preventDefault
+                        const stringdata = document.getElementById('string').value
+                        const integerdata = document.getElementById('integer').value
+                        const floatdata = document.getElementById('float').value
+                        const startDate = document.getElementById('startDate').value
+                        const endDate = document.getElementById('endDate').value
+                        const boolean = document.getElementById('boolean').value
+                        const stringcheck = document.getElementById("stringcheck").checked
+                        const integercheck = document.getElementById("integercheck").checked
+                        const floatcheck = document.getElementById("floatcheck").checked
+                        const datecheck = document.getElementById("datecheck").checked
+                        const booleancheck = document.getElementById("booleancheck").checked
+                        let page = response.page
+                        page--
+
+                        readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
+                    })
                 });
         }
 
@@ -360,26 +460,7 @@
             saveData(id, stringdata, integerdata, floatdata, datedata, boolean)
         })
 
-        document.getElementById('form-search').addEventListener('submit', function (event) {
-            event.preventDefault()
-            const stringdata = document.getElementById('string').value
-            const integerdata = document.getElementById('integer').value
-            const floatdata = document.getElementById('float').value
-            const startDate = document.getElementById('startDate').value
-            const endDate = document.getElementById('endDate').value
-            const boolean = document.getElementById('boolean').value
-            const stringcheck = document.getElementById("stringcheck").checked
-            const integercheck = document.getElementById("integercheck").checked
-            const floatcheck = document.getElementById("floatcheck").checked
-            const datecheck = document.getElementById("datecheck").checked
-            const booleancheck = document.getElementById("booleancheck").checked
 
-            readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
-        })
-
-        document.getElementById('pagination').addEventListener('submit', function () {
-            
-        })
     </script>
 </body>
 
