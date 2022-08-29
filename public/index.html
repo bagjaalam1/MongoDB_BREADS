@@ -267,7 +267,7 @@
                     `
                     for (let i = 1; i <= response.pages; i++) {
                         pagination += `
-                        <li class="page-item">
+                        <li class="page-item" id="number${i}">
                             <button id="page${i}" class="page-link">
                             ${i}
                             </button>
@@ -286,6 +286,13 @@
 
                     const prev = document.getElementById('prev')
                     const next = document.getElementById('next')
+                    for (let i = 1; i <= response.page; i++) {
+                        const number = document.getElementById(`number${i}`)
+                        if (response.page == i) {
+                            number.classList.remove('page-item')
+                            number.classList.add('page-item', 'active')
+                        }
+                    }
 
                     if (response.page == 1) {
                         prev.classList.remove('page-item')
