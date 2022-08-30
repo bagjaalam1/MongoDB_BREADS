@@ -55,6 +55,7 @@ exports.findAll = async (req, res) => {
             .find(query)
             .skip(offset)
             .limit(limit)
+            .sort({"datedata":-1})
 
         res.json(
             {
@@ -96,7 +97,6 @@ exports.findOne = (req, res) => {
     Bread.findById(id)
         .then(data => {
             res.send(data)
-            console.log(data)
         })
         .catch(err => {
             res.status(409).send({

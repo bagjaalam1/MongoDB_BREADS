@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB_BREADS</title>
+
+    <link rel="stylesheet" href="/fontawesome/css/all.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/jquery-3.6.1.min.js"></script>
+</head>
+
+<body>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Filter</h2>
+        </div>
+        <div class="card-body">
+            <form action="" method="get" id="form-search">
+                <!-- <div class="mb-3 row">
+                    <div class="col-sm-2 d-flex align-items-center">
+                        <input class="form-check-input mt-0" type="checkbox" id="idcheck" name="idcheck">
+                        <label class="col-form-label" for="idcheck">ID</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" id="id" name="id" placeholder="ID" value="">
+                    </div>
+                </div> -->
+                <div class="mb-3 row">
+                    <div class="col-sm-2 d-flex align-items-center">
+                        <input class="form-check-input mt-0" type="checkbox" id="stringcheck" name="stringcheck">
+                        <label class="col-form-label" for="stringcheck">String</label>
+                    </div>
+
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="string" name="stringdata" placeholder="String"
+                            value="">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-2 d-flex align-items-center">
+                        <input class="form-check-input mt-0" type="checkbox" id="integercheck" name="integercheck">
+                        <label class="col-form-label" for="integercheck">Integer</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" id="integer" name="integerdata" placeholder="Integer"
+                            value="">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-2 d-flex align-items-center">
+                        <input class="form-check-input mt-0" type="checkbox" id="floatcheck" name="floatcheck">
+                        <label class="col-form-label" for="floatcheck">Float</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="number" id="float" step="any" name="floatdata"
+                            placeholder="Float" value="">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+
+                    <div class="col-sm-2 d-flex align-items-center">
+                        <input class="form-check-input mt-0" type="checkbox" id="datecheck" name="datecheck">
+                        <label class="col-form-label" for="datecheck">Date</label>
+                    </div>
+
+                    <div class="col-sm-10">
+                        <input class="form-control" type="date" id="startDate" name="startDate" placeholder="start date"
+                            value="">
+                        <br>
+                        to <br>
+                        <input class="form-control" type="date" id="endDate" name="endDate" placeholder="end date"
+                            value="">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-2 d-flex align-items-center">
+                        <input class="form-check-input mt-0" type="checkbox" id="booleancheck" name="booleancheck">
+                        <label class="col-form-label" for="booleancheck">Boolean</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <select name="boolean" id="boolean" class="form-control">
+                            <option value="" disabled selected hidden>Choose the boolean ...</option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success"> Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <br>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    No
+                </th>
+                <th>
+                    String
+                </th>
+                <th>
+                    Integer
+                </th>
+                <th>
+                    Float
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Boolean
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody id="list">
+
+
+        </tbody>
+    </table>
+
+    <br>
+
+    <nav aria-label="...">
+        <ul class="pagination" id="pagination-numbers">
+
+        </ul>
+    </nav>
+
+    <br>
+
+    <div class="card-header">
+        <h2>Add Data</h2>
+    </div>
+
+    <form id="form" action="" method="post">
+        <input type="hidden" id="id-data" name="id" value="">
+        <div class="card-body">
+            <div class="mb-3 row">
+                <div class="col-sm-2 d-flex align-items-center">
+                    <label class="col-form-label" for="string-add">String</label>
+                </div>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" id="string-add" name="stringdata" placeholder="String"
+                        value="">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 d-flex align-items-center">
+                    <label class="col-form-label" for="integer-add">Integer</label>
+                </div>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" id="integer-add" name="integerdata" placeholder="Integer"
+                        value="">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 d-flex align-items-center">
+                    <label class="col-form-label" for="float-add">Float</label>
+                </div>
+                <div class="col-sm-10">
+                    <input class="form-control" type="number" id="float-add" step="any" name="floatdata"
+                        placeholder="Float" value="">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 d-flex align-items-center">
+                    <label class="col-form-label" for="date-add">Date</label>
+                </div>
+                <div class="col-sm-10">
+                    <input class="form-control" type="date" id="date-add" name="datedata" placeholder="end date"
+                        value="">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col-sm-2 d-flex align-items-center">
+                    <label class="col-form-label" for="boolean-add">Boolean</label>
+                </div>
+                <div class="col-sm-10">
+                    <select class="form-control" name="boolean" id="boolean-add">
+                        <option value="" disabled selected hidden>Choose the boolean ...</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div>
+                <input class="btn btn-success" type="submit" value="Save">
+            </div>
+        </div>
+    </form>
+
+    <script>
+        const readData = (params) => {
+            $.ajax({
+                method: "GET",
+                url: "http://localhost:3000/api",
+                dataType: "json",
+                data: params
+            })
+                .done(function (response) {
+                    let html = ''
+                    response.data.forEach((item, index) => {
+                        html += `
+                        <tr id="list-data${index}">
+                    <td>${index + 1}</td>
+                    <td>${item.stringdata}</td>
+                    <td>${item.integerdata}</td>
+                    <td>${item.floatdata}</td>
+                    <td>${item.datedata}</td>
+                    <td>${item.boolean}</td>
+                    <td>
+                        <a class="btn btn-success btn-sm btn-edit" iddata="${item._id}"><i class="fa-solid fa-pencil"></i></a>
+                        <a class="btn btn-danger btn-sm" onClick="deleteData('${item._id}')"><i class="fa-solid fa-trash"></i></a>    
+                    </td>
+                        </tr>
+                    `
+
+                    });
+                    $('table tbody').html(html)
+                    document.getElementById('form-search').addEventListener('submit', function () {
+                        event.preventDefault()
+                        const stringdata = document.getElementById('string').value
+                        const integerdata = document.getElementById('integer').value
+                        const floatdata = document.getElementById('float').value
+                        const startDate = document.getElementById('startDate').value
+                        const endDate = document.getElementById('endDate').value
+                        const boolean = document.getElementById('boolean').value
+                        const stringcheck = document.getElementById("stringcheck").checked
+                        const integercheck = document.getElementById("integercheck").checked
+                        const floatcheck = document.getElementById("floatcheck").checked
+                        const datecheck = document.getElementById("datecheck").checked
+                        const booleancheck = document.getElementById("booleancheck").checked
+
+                        readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
+                    })
+
+                    let pagination = `
+                    <li class="page-item " id="prev">
+                        <button class="page-link">
+                        Previous
+                        </button>
+                    </li>
+                    `
+                    for (let i = 1; i <= response.pages; i++) {
+                        pagination += `
+                        <li class="page-item" id="number${i}">
+                            <button id="page${i}" class="page-link">
+                            ${i}
+                            </button>
+                        </li>
+                        
+                        `
+                    }
+                    pagination += `
+                    <li class="page-item" id="next">
+                        <button class="page-link">
+                        Next
+                        </button>
+                    </li>
+                    `
+                    const paginationNumbers = $('#pagination-numbers')
+                    paginationNumbers.html(pagination)
+
+                    // const prev = $('#prev')
+                    // const next = $('#next')
+                    // for (let i = 1; i <= response.page; i++) {
+                    //     const number = document.getElementById(`number${i}`)
+                    //     if (response.page == i) {
+                    //         number.classList.remove('page-item')
+                    //         number.classList.add('page-item', 'active')
+                    //     }
+                    // }
+
+                    // if (response.page == 1) {
+                    //     prev.classList.remove('page-item')
+                    //     prev.classList.add('page-item', 'disabled')
+                    // }
+
+                    // if (response.page == response.pages) {
+                    //     next.classList.remove('page-item')
+                    //     next.classList.add('page-item', 'disabled')
+                    // }
+
+                    // for (let i = 1; i <= response.pages; i++) {
+                    //     document.getElementById(`page${i}`).addEventListener('click', function () {
+                    //         event.preventDefault
+                    //         const stringdata = document.getElementById('string').value
+                    //         const integerdata = document.getElementById('integer').value
+                    //         const floatdata = document.getElementById('float').value
+                    //         const startDate = document.getElementById('startDate').value
+                    //         const endDate = document.getElementById('endDate').value
+                    //         const boolean = document.getElementById('boolean').value
+                    //         const stringcheck = document.getElementById("stringcheck").checked
+                    //         const integercheck = document.getElementById("integercheck").checked
+                    //         const floatcheck = document.getElementById("floatcheck").checked
+                    //         const datecheck = document.getElementById("datecheck").checked
+                    //         const booleancheck = document.getElementById("booleancheck").checked
+                    //         let page = i
+
+                    //         readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
+                    //     })
+                    // }
+                    // document.getElementById('next').addEventListener('click', function () {
+                    //     event.preventDefault
+                    //     const stringdata = document.getElementById('string').value
+                    //     const integerdata = document.getElementById('integer').value
+                    //     const floatdata = document.getElementById('float').value
+                    //     const startDate = document.getElementById('startDate').value
+                    //     const endDate = document.getElementById('endDate').value
+                    //     const boolean = document.getElementById('boolean').value
+                    //     const stringcheck = document.getElementById("stringcheck").checked
+                    //     const integercheck = document.getElementById("integercheck").checked
+                    //     const floatcheck = document.getElementById("floatcheck").checked
+                    //     const datecheck = document.getElementById("datecheck").checked
+                    //     const booleancheck = document.getElementById("booleancheck").checked
+                    //     let page = response.page
+                    //     page++
+
+                    //     readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
+                    // })
+                    // document.getElementById('prev').addEventListener('click', function () {
+                    //     event.preventDefault
+                    //     const stringdata = document.getElementById('string').value
+                    //     const integerdata = document.getElementById('integer').value
+                    //     const floatdata = document.getElementById('float').value
+                    //     const startDate = document.getElementById('startDate').value
+                    //     const endDate = document.getElementById('endDate').value
+                    //     const boolean = document.getElementById('boolean').value
+                    //     const stringcheck = document.getElementById("stringcheck").checked
+                    //     const integercheck = document.getElementById("integercheck").checked
+                    //     const floatcheck = document.getElementById("floatcheck").checked
+                    //     const datecheck = document.getElementById("datecheck").checked
+                    //     const booleancheck = document.getElementById("booleancheck").checked
+                    //     let page = response.page
+                    //     page--
+
+                    //     readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
+                    // })
+                })
+                .fail(function (err) {
+                    alert("gagal pake jquery")
+                })
+        }
+
+        const saveData = (id, stringdata, integerdata, floatdata, datedata, boolean) => {
+            if (id) {
+                $.ajax({
+                    method: 'PUT',
+                    url: `http://localhost:3000/api/edit/${id}`,
+                    dataType: 'json',
+                    data: { stringdata, integerdata, floatdata, datedata, boolean }
+                })
+                    .done(function (response) {
+                        readData()
+                        $('#id-data')[0].value = ''
+                        $('#form')[0].reset()
+                    })
+                    .fail(function (err) {
+                        alert("gagal pake jquery")
+                    })
+            } else {
+                $.ajax({
+                    method: "POST",
+                    url: "http://localhost:3000/api/add",
+                    dataType: "json",
+                    data: { stringdata, integerdata, floatdata, datedata, boolean }
+                })
+                    .done(function (response) {
+                        readData()
+                        $('#form')[0].reset()
+                    })
+                    .fail(function (err) {
+                        alert("gagal pake jquery")
+                    })
+            }
+
+        }
+
+        const editData = (id) => {
+            $.ajax({
+                method: "GET",
+                url: `http://localhost:3000/api/edit/${id}`,
+            })
+                .done(function (response) {
+                    $('#id-data')[0].value = response._id
+                    $('#string-add')[0].value = response.stringdata
+                    $('#integer-add')[0].value = response.integerdata
+                    $('#float-add')[0].value = response.floatdata
+                    $('#date-add')[0].value = response.datedata
+                    $('#boolean-add')[0].value = response.boolean
+                })
+                .fail(function () {
+                    alert("gagal pake jquery")
+                })
+        }
+
+        const deleteData = (id) => {
+            $.ajax({
+                method: 'DELETE',
+                url: `http://localhost:3000/api/${id}`,
+            })
+                .done(function () {
+                    readData()
+                })
+                .fail(function () {
+                    alert("gagal pake jquery")
+                })
+        }
+
+
+        //memastikan document sudah ke load sempurna baru bekerja
+        $(document).ready(function () {
+            readData()
+
+            $('form').submit(function (event) {
+                event.preventDefault()
+                const id = $('#id-data').val()
+                const stringdata = $('#string-add').val()
+                const integerdata = $('#integer-add').val()
+                const floatdata = $('#float-add').val()
+                const datedata = $('#date-add').val()
+                const boolean = $('#boolean-add').val()
+                saveData(id, stringdata, integerdata, floatdata, datedata, boolean)
+            })
+
+            $('.btn-edit').on('click')
+        })
+
+
+
+    </script>
+</body>
+
+</html>
