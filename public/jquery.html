@@ -93,6 +93,7 @@
                 <br>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"> Search</button>
+                    <button type="button" class="btn btn-warning" id="reset-form-search"> Reset </button>
                 </div>
             </form>
         </div>
@@ -225,26 +226,26 @@
                     <td>${item.boolean}</td>
                     <td>
                         <a class="btn btn-success btn-sm btn-edit" iddata="${item._id}"><i class="fa-solid fa-pencil"></i></a>
-                        <a class="btn btn-danger btn-sm" onClick="deleteData('${item._id}')"><i class="fa-solid fa-trash"></i></a>    
+                        <a class="btn btn-danger btn-sm btn-delete" iddata="${item._id}"><i class="fa-solid fa-trash"></i></a>    
                     </td>
                         </tr>
                     `
 
                     });
                     $('table tbody').html(html)
-                    document.getElementById('form-search').addEventListener('submit', function () {
+                    $('#form-search').submit(function () {
                         event.preventDefault()
-                        const stringdata = document.getElementById('string').value
-                        const integerdata = document.getElementById('integer').value
-                        const floatdata = document.getElementById('float').value
-                        const startDate = document.getElementById('startDate').value
-                        const endDate = document.getElementById('endDate').value
-                        const boolean = document.getElementById('boolean').value
-                        const stringcheck = document.getElementById("stringcheck").checked
-                        const integercheck = document.getElementById("integercheck").checked
-                        const floatcheck = document.getElementById("floatcheck").checked
-                        const datecheck = document.getElementById("datecheck").checked
-                        const booleancheck = document.getElementById("booleancheck").checked
+                        const stringdata = $('#string')[0].value
+                        const integerdata = $('#integer')[0].value
+                        const floatdata = $('#float')[0].value
+                        const startDate = $('#startDate')[0].value
+                        const endDate = $('#endDate')[0].value
+                        const boolean = $('#boolean')[0].value
+                        const stringcheck = $("#stringcheck")[0].checked
+                        const integercheck = $("#integercheck")[0].checked
+                        const floatcheck = $("#floatcheck")[0].checked
+                        const datecheck = $("#datecheck")[0].checked
+                        const booleancheck = $("#booleancheck")[0].checked
 
                         readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
                     })
@@ -427,7 +428,7 @@
         $(document).ready(function () {
             readData()
 
-            $('form').submit(function (event) {
+            $('#form').submit(function (event) {
                 event.preventDefault()
                 const id = $('#id-data').val()
                 const stringdata = $('#string-add').val()
@@ -438,7 +439,20 @@
                 saveData(id, stringdata, integerdata, floatdata, datedata, boolean)
             })
 
-            $('.btn-edit').on('click')
+            $('table tbody').on('click', '.btn-edit', function () {
+                const id = $(this).attr('iddata')
+                editData(id)
+            })
+
+            $('table tbody').on('click', '.btn-delete', function () {
+                const id = $(this).attr('iddata')
+                deleteData(id)
+            })
+
+            $('#reset-form-search').click(function(){
+                readData()
+                $('#form-search')[0].reset()
+            })
         })
 
 
