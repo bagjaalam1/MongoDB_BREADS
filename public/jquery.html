@@ -141,6 +141,22 @@
         </ul>
     </nav>
 
+    <div class="col-2">
+        <div class="row mb-3">
+            <label for="display">display</label>
+            <div class="col-sm-4">
+                <select id="display" class="form-control">
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="all">all</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+
     <br>
 
     <div class="card-header">
@@ -367,7 +383,8 @@
                     data: { stringdata, integerdata, floatdata, datedata, boolean }
                 })
                     .done(function (response) {
-                        readData()
+                        const display = $('#display').val();
+                        readData({display})
                         $('#id-data')[0].value = ''
                         $('#form')[0].reset()
                     })
@@ -382,7 +399,8 @@
                     data: { stringdata, integerdata, floatdata, datedata, boolean }
                 })
                     .done(function (response) {
-                        readData()
+                        const display = $('#display').val();
+                        readData({display})
                         $('#form')[0].reset()
                     })
                     .fail(function (err) {
@@ -424,6 +442,7 @@
         }
 
 
+
         //memastikan document sudah ke load sempurna baru bekerja
         $(document).ready(function () {
             readData()
@@ -449,10 +468,15 @@
                 deleteData(id)
             })
 
-            $('#reset-form-search').click(function(){
+            $('#reset-form-search').click(function () {
                 readData()
                 $('#form-search')[0].reset()
             })
+
+            $('#display').change(function () {
+                const display = $(this).val();
+                readData({display})
+            });
         })
 
 

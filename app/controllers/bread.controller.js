@@ -45,7 +45,7 @@ exports.findAll = async (req, res) => {
         }
 
         let page = req.query.page || 1;
-        const limit = 3;
+        const limit = req.query.display == 'all' ? 0 : req.query.display || 3; 
         const offset = page > 0 ? (page - 1) * limit : 0;
 
         const totalResult = await Bread.count(query)
@@ -55,7 +55,7 @@ exports.findAll = async (req, res) => {
             .find(query)
             .skip(offset)
             .limit(limit)
-            .sort({"datedata":-1})
+            .sort()
 
         res.json(
             {
