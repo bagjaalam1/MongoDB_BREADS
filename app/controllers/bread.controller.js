@@ -44,13 +44,13 @@ exports.findAll = async (req, res) => {
             };
         }
 
-        let page = req.query.page || 1;
+        let page = req.query.page || 1
         const limit = req.query.display == 'all' ? 0 : req.query.display || 3; 
-        const offset = page > 0 ? (page - 1) * limit : 0;
+        const offset = page > 0 ? (page - 1) * limit : page = 1;
 
         const totalResult = await Bread.count(query)
         const pages = Math.ceil(totalResult / limit)
-        console.log(offset)
+
         const data = await Bread
             .find(query)
             .skip(offset)
@@ -61,7 +61,8 @@ exports.findAll = async (req, res) => {
             {
                 data,
                 page: Number(page),
-                pages
+                pages,
+                limit: Number(limit)
             }
         )
     } catch (err) {

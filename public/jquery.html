@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
     <script src="/javascripts/jquery-3.6.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 </head>
 
 <body>
@@ -105,22 +106,22 @@
         <thead>
             <tr>
                 <th>
-                    No
+                    <a class="link-dark text-decoration-none" href="" datasort="_id"><i class="fas fa-sort"></i> ID</a>
                 </th>
                 <th>
-                    String
+                    <a class="link-dark text-decoration-none" href="" datasort="stringdata"><i class="fas fa-sort"></i> String</a>
                 </th>
                 <th>
-                    Integer
+                    <a class="link-dark text-decoration-none" href="" datasort="integerdata"><i class="fas fa-sort"></i> Integer</a>
                 </th>
                 <th>
-                    Float
+                    <a class="link-dark text-decoration-none" href="" datasort="floatdata"><i class="fas fa-sort"></i> Float</a>
                 </th>
                 <th>
-                    Date
+                    <a class="link-dark text-decoration-none" href="" datasort="datedata"><i class="fas fa-sort"></i> Date</a>
                 </th>
                 <th>
-                    Boolean
+                    <a class="link-dark text-decoration-none" href="" datasort="boolean"><i class="fas fa-sort"></i> Boolean</a>
                 </th>
                 <th>
                     Actions
@@ -136,7 +137,7 @@
     <br>
 
     <nav aria-label="...">
-        <ul class="pagination" id="pagination-numbers">
+        <ul class="pagination" id="pagination">
 
         </ul>
     </nav>
@@ -222,6 +223,8 @@
     </form>
 
     <script>
+        moment.locale("id");
+
         const readData = (params) => {
             $.ajax({
                 method: "GET",
@@ -234,11 +237,11 @@
                     response.data.forEach((item, index) => {
                         html += `
                         <tr id="list-data${index}">
-                    <td>${index + 1}</td>
+                    <td>${(response.page - 1) * response.limit + index + 1}</td>
                     <td>${item.stringdata}</td>
                     <td>${item.integerdata}</td>
                     <td>${item.floatdata}</td>
-                    <td>${item.datedata}</td>
+                    <td>${item.datedata ? moment(item.datedata).format("LL") : "kosong"}</td>
                     <td>${item.boolean}</td>
                     <td>
                         <a class="btn btn-success btn-sm btn-edit" iddata="${item._id}"><i class="fa-solid fa-pencil"></i></a>
@@ -249,125 +252,8 @@
 
                     });
                     $('table tbody').html(html)
-                    $('#form-search').submit(function () {
-                        event.preventDefault()
-                        const stringdata = $('#string')[0].value
-                        const integerdata = $('#integer')[0].value
-                        const floatdata = $('#float')[0].value
-                        const startDate = $('#startDate')[0].value
-                        const endDate = $('#endDate')[0].value
-                        const boolean = $('#boolean')[0].value
-                        const stringcheck = $("#stringcheck")[0].checked
-                        const integercheck = $("#integercheck")[0].checked
-                        const floatcheck = $("#floatcheck")[0].checked
-                        const datecheck = $("#datecheck")[0].checked
-                        const booleancheck = $("#booleancheck")[0].checked
 
-                        readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
-                    })
-
-                    let pagination = `
-                    <li class="page-item " id="prev">
-                        <button class="page-link">
-                        Previous
-                        </button>
-                    </li>
-                    `
-                    for (let i = 1; i <= response.pages; i++) {
-                        pagination += `
-                        <li class="page-item" id="number${i}">
-                            <button id="page${i}" class="page-link">
-                            ${i}
-                            </button>
-                        </li>
-                        
-                        `
-                    }
-                    pagination += `
-                    <li class="page-item" id="next">
-                        <button class="page-link">
-                        Next
-                        </button>
-                    </li>
-                    `
-                    const paginationNumbers = $('#pagination-numbers')
-                    paginationNumbers.html(pagination)
-
-                    // const prev = $('#prev')
-                    // const next = $('#next')
-                    // for (let i = 1; i <= response.page; i++) {
-                    //     const number = document.getElementById(`number${i}`)
-                    //     if (response.page == i) {
-                    //         number.classList.remove('page-item')
-                    //         number.classList.add('page-item', 'active')
-                    //     }
-                    // }
-
-                    // if (response.page == 1) {
-                    //     prev.classList.remove('page-item')
-                    //     prev.classList.add('page-item', 'disabled')
-                    // }
-
-                    // if (response.page == response.pages) {
-                    //     next.classList.remove('page-item')
-                    //     next.classList.add('page-item', 'disabled')
-                    // }
-
-                    // for (let i = 1; i <= response.pages; i++) {
-                    //     document.getElementById(`page${i}`).addEventListener('click', function () {
-                    //         event.preventDefault
-                    //         const stringdata = document.getElementById('string').value
-                    //         const integerdata = document.getElementById('integer').value
-                    //         const floatdata = document.getElementById('float').value
-                    //         const startDate = document.getElementById('startDate').value
-                    //         const endDate = document.getElementById('endDate').value
-                    //         const boolean = document.getElementById('boolean').value
-                    //         const stringcheck = document.getElementById("stringcheck").checked
-                    //         const integercheck = document.getElementById("integercheck").checked
-                    //         const floatcheck = document.getElementById("floatcheck").checked
-                    //         const datecheck = document.getElementById("datecheck").checked
-                    //         const booleancheck = document.getElementById("booleancheck").checked
-                    //         let page = i
-
-                    //         readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
-                    //     })
-                    // }
-                    // document.getElementById('next').addEventListener('click', function () {
-                    //     event.preventDefault
-                    //     const stringdata = document.getElementById('string').value
-                    //     const integerdata = document.getElementById('integer').value
-                    //     const floatdata = document.getElementById('float').value
-                    //     const startDate = document.getElementById('startDate').value
-                    //     const endDate = document.getElementById('endDate').value
-                    //     const boolean = document.getElementById('boolean').value
-                    //     const stringcheck = document.getElementById("stringcheck").checked
-                    //     const integercheck = document.getElementById("integercheck").checked
-                    //     const floatcheck = document.getElementById("floatcheck").checked
-                    //     const datecheck = document.getElementById("datecheck").checked
-                    //     const booleancheck = document.getElementById("booleancheck").checked
-                    //     let page = response.page
-                    //     page++
-
-                    //     readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
-                    // })
-                    // document.getElementById('prev').addEventListener('click', function () {
-                    //     event.preventDefault
-                    //     const stringdata = document.getElementById('string').value
-                    //     const integerdata = document.getElementById('integer').value
-                    //     const floatdata = document.getElementById('float').value
-                    //     const startDate = document.getElementById('startDate').value
-                    //     const endDate = document.getElementById('endDate').value
-                    //     const boolean = document.getElementById('boolean').value
-                    //     const stringcheck = document.getElementById("stringcheck").checked
-                    //     const integercheck = document.getElementById("integercheck").checked
-                    //     const floatcheck = document.getElementById("floatcheck").checked
-                    //     const datecheck = document.getElementById("datecheck").checked
-                    //     const booleancheck = document.getElementById("booleancheck").checked
-                    //     let page = response.page
-                    //     page--
-
-                    //     readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page })
-                    // })
+                    pagination(response.page, response.pages)
                 })
                 .fail(function (err) {
                     alert("gagal pake jquery")
@@ -384,7 +270,7 @@
                 })
                     .done(function (response) {
                         const display = $('#display').val();
-                        readData({display})
+                        readData({ display })
                         $('#id-data')[0].value = ''
                         $('#form')[0].reset()
                     })
@@ -400,14 +286,13 @@
                 })
                     .done(function (response) {
                         const display = $('#display').val();
-                        readData({display})
+                        readData({ display })
                         $('#form')[0].reset()
                     })
                     .fail(function (err) {
                         alert("gagal pake jquery")
                     })
             }
-
         }
 
         const editData = (id) => {
@@ -441,7 +326,33 @@
                 })
         }
 
-
+        const pagination = (page, pages) => {
+            let pagination = `
+                    <li class="page-item" id="prev" datapage="${page - 1}">
+                        <button class="page-link prev-next"${page == 1 ? ' disabled' : ''}>
+                        Previous
+                        </button>
+                    </li>
+                    `
+            for (let i = 1; i <= pages; i++) {
+                pagination += `
+                        <li class="page-item${page == i ? ' active' : ''}" datapage="${i}">
+                            <button class="page-link">
+                            ${i}
+                            </button>
+                        </li>    
+                        `
+            }
+            pagination += `
+                    <li class="page-item" id="next" datapage="${page + 1}">
+                        <button class="page-link prev-next"${page == pages ? ' disabled' : ''}>
+                        Next
+                        </button>
+                    </li>
+                    `
+            const paginationNumbers = $('#pagination')
+            paginationNumbers.html(pagination)
+        }
 
         //memastikan document sudah ke load sempurna baru bekerja
         $(document).ready(function () {
@@ -474,13 +385,45 @@
             })
 
             $('#display').change(function () {
+                
                 const display = $(this).val();
-                readData({display})
+                readData({ display })
             });
+
+            $('#form-search').submit(function () {
+                event.preventDefault()
+                const stringdata = $('#string')[0].value
+                const integerdata = $('#integer')[0].value
+                const startDate = $('#startDate')[0].value
+                const endDate = $('#endDate')[0].value
+                const boolean = $('#boolean')[0].value
+                const stringcheck = $("#stringcheck")[0].checked
+                const integercheck = $("#integercheck")[0].checked
+                const floatcheck = $("#floatcheck")[0].checked
+                const datecheck = $("#datecheck")[0].checked
+                const booleancheck = $("#booleancheck")[0].checked
+
+                readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
+            })
+
+            $('#pagination').on('click', '.page-item', function () {
+                const stringdata = $('#string')[0].value
+                const integerdata = $('#integer')[0].value
+                const floatdata = $('#float')[0].value
+                const startDate = $('#startDate')[0].value
+                const endDate = $('#endDate')[0].value
+                const boolean = $('#boolean')[0].value
+                const stringcheck = $("#stringcheck")[0].checked
+                const integercheck = $("#integercheck")[0].checked
+                const floatcheck = $("#floatcheck")[0].checked
+                const datecheck = $("#datecheck")[0].checked
+                const booleancheck = $("#booleancheck")[0].checked
+                const page = $(this).attr('datapage')
+                const display = $('#display')[0].value
+
+                readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page, display })
+            })
         })
-
-
-
     </script>
 </body>
 
