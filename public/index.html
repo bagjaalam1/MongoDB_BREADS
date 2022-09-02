@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/fontawesome/css/all.css">
     <link rel="stylesheet" href="/stylesheets/bootstrap.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
 </head>
 
 <body>
@@ -20,15 +21,6 @@
         </div>
         <div class="card-body">
             <form action="" method="get" id="form-search">
-                <!-- <div class="mb-3 row">
-                    <div class="col-sm-2 d-flex align-items-center">
-                        <input class="form-check-input mt-0" type="checkbox" id="idcheck" name="idcheck">
-                        <label class="col-form-label" for="idcheck">ID</label>
-                    </div>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="number" id="id" name="id" placeholder="ID" value="">
-                    </div>
-                </div> -->
                 <div class="mb-3 row">
                     <div class="col-sm-2 d-flex align-items-center">
                         <input class="form-check-input mt-0" type="checkbox" id="stringcheck" name="stringcheck">
@@ -204,6 +196,8 @@
     </form>
 
     <script>
+        moment.locale("id")
+
         const readData = (params) => {
             fetch(`http://localhost:3000/api?${new URLSearchParams(params).toString()}`, {
                 method: 'GET',
@@ -229,7 +223,7 @@
                     <td>${item.stringdata}</td>
                     <td>${item.integerdata}</td>
                     <td>${item.floatdata}</td>
-                    <td>${item.datedata}</td>
+                    <td>${item.datedata ? moment(item.datedata).format("LL") : "kosong"}</td>
                     <td>${item.boolean}</td>
                     <td>
                         <a class="btn btn-success btn-sm" onClick="editData('${item._id}')"><i class="fa-solid fa-pencil"></i></a>
