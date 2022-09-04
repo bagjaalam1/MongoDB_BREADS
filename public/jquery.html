@@ -294,7 +294,8 @@
                 })
                     .done(function (response) {
                         const display = $('#display').val();
-                        readData({ display })
+                        params = { ...params, display }
+                        readData()
                         $('#id-data')[0].value = ''
                         $('#form')[0].reset()
                     })
@@ -310,7 +311,8 @@
                 })
                     .done(function (response) {
                         const display = $('#display').val();
-                        readData({ display })
+                        params = { ...params, display }
+                        readData()
                         $('#form')[0].reset()
                     })
                     .fail(function (err) {
@@ -418,8 +420,8 @@
             })
 
             $('#reset-form-search').click(function () {
-                readData()
                 $('#form-search')[0].reset()
+                readData()
             })
 
             $('#display').change(function () {
