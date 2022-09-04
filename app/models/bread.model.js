@@ -11,12 +11,6 @@ module.exports = (mongoose) => {
         { timestamps: true }
     )
 
-    schema.method("toJson", function(){
-        const {__v, _id, ...Object} = this.toObject()
-        object.id = _id
-        return object
-    })
-
     const Post = mongoose.model("breads", schema)
     return Post
 }
