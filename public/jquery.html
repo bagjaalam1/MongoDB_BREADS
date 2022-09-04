@@ -109,19 +109,24 @@
                     <a class="link-dark text-decoration-none" href="" datasort="_id"><i class="fas fa-sort"></i> ID</a>
                 </th>
                 <th>
-                    <a class="link-dark text-decoration-none" href="" datasort="stringdata"><i class="fas fa-sort"></i> String</a>
+                    <a class="link-dark text-decoration-none" href="" datasort="stringdata"><i class="fas fa-sort"></i>
+                        String</a>
                 </th>
                 <th>
-                    <a class="link-dark text-decoration-none" href="" datasort="integerdata"><i class="fas fa-sort"></i> Integer</a>
+                    <a class="link-dark text-decoration-none" href="" datasort="integerdata"><i class="fas fa-sort"></i>
+                        Integer</a>
                 </th>
                 <th>
-                    <a class="link-dark text-decoration-none" href="" datasort="floatdata"><i class="fas fa-sort"></i> Float</a>
+                    <a class="link-dark text-decoration-none" href="" datasort="floatdata"><i class="fas fa-sort"></i>
+                        Float</a>
                 </th>
                 <th>
-                    <a class="link-dark text-decoration-none" href="" datasort="datedata"><i class="fas fa-sort"></i> Date</a>
+                    <a class="link-dark text-decoration-none" href="" datasort="datedata"><i class="fas fa-sort"></i>
+                        Date</a>
                 </th>
                 <th>
-                    <a class="link-dark text-decoration-none" href="" datasort="boolean"><i class="fas fa-sort"></i> Boolean</a>
+                    <a class="link-dark text-decoration-none" href="" datasort="boolean"><i class="fas fa-sort"></i>
+                        Boolean</a>
                 </th>
                 <th>
                     Actions
@@ -225,7 +230,25 @@
     <script>
         moment.locale("id");
 
-        const readData = (params) => {
+        var params = {
+            page: 1,
+            stringcheck: null,
+            integercheck: null,
+            floatcheck: null,
+            datecheck: null,
+            booleancheck: null,
+            _id: null,
+            stringdata: null,
+            integerdata: null,
+            floatdata: null,
+            startDate: null,
+            endDate: null,
+            boolean: null,
+            sortBy: "_id",
+            sortMode: "asc",
+        }
+
+        const readData = () => {
             $.ajax({
                 method: "GET",
                 url: "http://localhost:3000/api",
@@ -254,19 +277,20 @@
                     $('table tbody').html(html)
 
                     pagination(response.page, response.pages)
+                    sort()
                 })
                 .fail(function (err) {
                     alert("gagal pake jquery")
                 })
         }
 
-        const saveData = (id, stringdata, integerdata, floatdata, datedata, boolean) => {
+        const saveData = (id) => {
             if (id) {
                 $.ajax({
                     method: 'PUT',
                     url: `http://localhost:3000/api/edit/${id}`,
                     dataType: 'json',
-                    data: { stringdata, integerdata, floatdata, datedata, boolean }
+                    data: params
                 })
                     .done(function (response) {
                         const display = $('#display').val();
@@ -282,7 +306,7 @@
                     method: "POST",
                     url: "http://localhost:3000/api/add",
                     dataType: "json",
-                    data: { stringdata, integerdata, floatdata, datedata, boolean }
+                    data: params
                 })
                     .done(function (response) {
                         const display = $('#display').val();
@@ -354,19 +378,33 @@
             paginationNumbers.html(pagination)
         }
 
+        const sort = () => {
+            $('th a i.fas').each(function (i, obj) {
+                if ($(this).parent().attr('datasort') == params.sortBy && params.sortMode == 'asc') {
+                    $(this).attr('class', `fas fa-sort-up`);
+                } else if ($(this).parent().attr('datasort') == params.sortBy && params.sortMode == 'desc') {
+                    $(this).attr('class', 'fas fa-sort-down');
+                } else {
+                    $(this).attr('class', 'fas fa-sort');
+                }
+            });
+        }
+
         //memastikan document sudah ke load sempurna baru bekerja
         $(document).ready(function () {
             readData()
 
             $('#form').submit(function (event) {
                 event.preventDefault()
-                const id = $('#id-data').val()
+                const _id = $('#id-data').val()
                 const stringdata = $('#string-add').val()
                 const integerdata = $('#integer-add').val()
                 const floatdata = $('#float-add').val()
                 const datedata = $('#date-add').val()
                 const boolean = $('#boolean-add').val()
-                saveData(id, stringdata, integerdata, floatdata, datedata, boolean)
+
+                params = { ...params, _id, stringdata, integerdata, floatdata, datedata, boolean }
+                saveData(_id)
             })
 
             $('table tbody').on('click', '.btn-edit', function () {
@@ -385,9 +423,10 @@
             })
 
             $('#display').change(function () {
-                
+
                 const display = $(this).val();
-                readData({ display })
+                params = { ...params, display }
+                readData()
             });
 
             $('#form-search').submit(function () {
@@ -402,8 +441,9 @@
                 const floatcheck = $("#floatcheck")[0].checked
                 const datecheck = $("#datecheck")[0].checked
                 const booleancheck = $("#booleancheck")[0].checked
+                params = { ...params, stringdata, integerdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck }
 
-                readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck })
+                readData()
             })
 
             $('#pagination').on('click', '.page-item', function () {
@@ -420,9 +460,23 @@
                 const booleancheck = $("#booleancheck")[0].checked
                 const page = $(this).attr('datapage')
                 const display = $('#display')[0].value
+                params = { ...params, stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page, display }
 
-                readData({ stringdata, integerdata, floatdata, startDate, endDate, boolean, stringcheck, integercheck, floatcheck, datecheck, booleancheck, page, display })
+                readData()
             })
+
+            $("table.table").on("click", "th a", function (event) {
+                event.preventDefault()
+                const sortBy = $(this).attr("datasort")
+
+                if (params.sortBy != sortBy) {
+                    params.sortMode = 'asc'
+                } else {
+                    params.sortMode = params.sortMode == "asc" ? "desc" : "asc"
+                }
+                params = { ...params, sortBy }
+                readData()
+            });
         })
     </script>
 </body>

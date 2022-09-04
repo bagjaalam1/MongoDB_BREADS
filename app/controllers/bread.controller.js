@@ -5,6 +5,14 @@ exports.findAll = async (req, res) => {
 
     try {
 
+        const field = ['_id', 'stringdata', 'integerdata', 'floatdata', 'datedata', 'boolean'];
+
+        const sortBy = field.includes(req.query.sortBy) ? req.query.sortBy : '_id';
+        const sortMode = req.query.sortMode === 'desc' ? -1 : 1;
+
+        req.query.sortBy = sortBy;
+        req.query.sortMode = sortMode === -1 ? 'desc' : 'asc';
+
         let query = {}
         const stringCheck = req.query.stringcheck == 'false' ? false : true
         const integerCheck = req.query.integercheck == 'false' ? false : true
@@ -45,7 +53,7 @@ exports.findAll = async (req, res) => {
         }
 
         let page = req.query.page || 1
-        const limit = req.query.display == 'all' ? 0 : req.query.display || 3; 
+        const limit = req.query.display == 'all' ? 0 : req.query.display || 3;
         const offset = page > 0 ? (page - 1) * limit : page = 1;
 
         const totalResult = await Bread.count(query)
@@ -55,7 +63,7 @@ exports.findAll = async (req, res) => {
             .find(query)
             .skip(offset)
             .limit(limit)
-            .sort()
+            .sort({ [sortBy]: sortMode })
 
         res.json(
             {
