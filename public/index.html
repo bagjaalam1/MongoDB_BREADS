@@ -254,7 +254,7 @@
                     const paginationNumbers = document.getElementById('pagination-numbers')
                     let pagination = `
                     <li class="page-item " id="prev">
-                        <button class="page-link">
+                        <button class="page-link"${response.page == 1 ? ' disabled' : ''}>
                         Previous
                         </button>
                     </li>
@@ -271,7 +271,7 @@
                     }
                     pagination += `
                     <li class="page-item" id="next">
-                        <button class="page-link">
+                        <button class="page-link"${response.page == response.pages ? ' disabled' : ''}>
                         Next
                         </button>
                     </li>
@@ -286,16 +286,6 @@
                             number.classList.remove('page-item')
                             number.classList.add('page-item', 'active')
                         }
-                    }
-
-                    if (response.page == 1) {
-                        prev.classList.remove('page-item')
-                        prev.classList.add('page-item', 'disabled')
-                    }
-
-                    if (response.page == response.pages) {
-                        next.classList.remove('page-item')
-                        next.classList.add('page-item', 'disabled')
                     }
 
                     for (let i = 1; i <= response.pages; i++) {
