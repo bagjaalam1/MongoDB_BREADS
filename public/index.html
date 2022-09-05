@@ -84,6 +84,7 @@
                 <br>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success"> Search</button>
+                    <button type="button" class="btn btn-warning" id="reset-form-search"> Reset </button>
                 </div>
             </form>
         </div>
@@ -214,12 +215,11 @@
 
                 })
                 .then((response) => {
-                    console.log(response)
                     let html = ''
                     response.data.forEach((item, index) => {
                         html += `
                         <tr id="list-data${index}">
-                    <td>${index + 1}</td>
+                    <td>${(response.page - 1) * response.limit + index + 1}</td>
                     <td>${item.stringdata}</td>
                     <td>${item.integerdata}</td>
                     <td>${item.floatdata}</td>
@@ -404,7 +404,6 @@
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
-                    console.log(response)
                     return response.json();
                 })
                 .then((response) => {
@@ -414,7 +413,6 @@
                     document.getElementById('float-add').value = response.floatdata
                     document.getElementById('date-add').value = response.datedata
                     document.getElementById('boolean-add').value = response.boolean
-                    console.log(response)
                 })
         }
 
@@ -449,6 +447,11 @@
             const datedata = document.getElementById('date-add').value
             const boolean = document.getElementById('boolean-add').value
             saveData(id, stringdata, integerdata, floatdata, datedata, boolean)
+        })
+
+        document.getElementById('reset-form-search').addEventListener('click',function() {
+            document.getElementById('form-search').reset()
+            readData()
         })
 
 

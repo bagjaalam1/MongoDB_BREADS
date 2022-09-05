@@ -427,7 +427,7 @@
             $('#display').change(function () {
 
                 const display = $(this).val();
-                params = { ...params, display }
+                params = { ...params, display, page: 1 }
                 readData()
             });
 
